@@ -672,6 +672,56 @@ Si me das el lenguaje, el codigo o el resultado esperado, puedo darte una soluci
 Quieres que lo resolvamos en Python, C#, SQL o JavaScript?`;
 }
 
+function buildWelcomeAnswer() {
+  return `Hola, soy tu Asistente de Programacion.
+
+Puedo ayudarte a aprender desde cero, elegir un lenguaje, resolver errores de codigo, crear proyectos y entender temas como Python, C#, bases de datos, Power BI, ciberseguridad, automatizacion con N8N y desarrollo web.
+
+Puedes preguntarme cosas como:
+- Quiero aprender a programar, por donde comienzo?
+- Que lenguaje me recomiendas?
+- Como hago mi primera pagina web?
+- Como creo una app?
+- Que proyecto puedo hacer para practicar?
+- Puedes revisar este codigo?
+
+Cuéntame que quieres aprender o que problema tienes, y te guiare paso a paso.`;
+}
+
+function buildProjectIdeasAnswer(settings: AppSettings) {
+  const favoriteLanguage = settings.favoriteLanguage.trim() || 'Python';
+
+  return `1. Respuesta directa:
+Para practicar programacion, elige proyectos pequenos que tengan entrada de datos, logica, almacenamiento y una salida visible.
+
+2. Explicacion sencilla:
+Un buen proyecto no tiene que ser grande. Debe obligarte a usar conceptos reales: variables, condicionales, ciclos, funciones, listas, validaciones y, poco a poco, bases de datos.
+
+3. Ruta sugerida:
+1. Calculadora basica.
+2. Conversor de temperatura o monedas.
+3. Juego de adivinar un numero.
+4. Sistema de notas de estudiantes.
+5. Agenda de contactos.
+6. Inventario sencillo.
+7. CRUD con base de datos.
+8. Dashboard simple con Power BI.
+
+4. Ejemplo practico:
+\`\`\`${favoriteLanguage.toLowerCase()}
+# Idea: sistema de notas
+notas = [80, 95, 70]
+promedio = sum(notas) / len(notas)
+print("Promedio:", promedio)
+\`\`\`
+
+5. Recomendacion final:
+Haz un proyecto por semana y subelo a GitHub con un README que explique que hace, como se ejecuta y que aprendiste. ${bookRecommendation('programacion')}
+
+6. Pregunta de seguimiento:
+Quieres que te proponga 10 proyectos ordenados de principiante a avanzado?`;
+}
+
 export async function getAssistantResponse(question: string, settings: AppSettings): Promise<string> {
   await wait(650);
 
@@ -683,6 +733,23 @@ export async function getAssistantResponse(question: string, settings: AppSettin
   // PDFs, TXT, Markdown o DOCX y responder con citas verificables.
   if (looksLikeCode(question) && !detectedTopic) {
     return buildCodeReviewAnswer(question, settings);
+  }
+
+  if (includesAny(normalizedQuestion, ['hola', 'buenas', 'ayuda', 'que puedes hacer', 'como me ayudas'])) {
+    return buildWelcomeAnswer();
+  }
+
+  if (
+    includesAny(normalizedQuestion, [
+      'proyecto para practicar',
+      'proyectos para practicar',
+      'que proyecto',
+      'ideas de proyectos',
+      'practicar programacion',
+      'mini proyecto'
+    ])
+  ) {
+    return buildProjectIdeasAnswer(settings);
   }
 
   if (
