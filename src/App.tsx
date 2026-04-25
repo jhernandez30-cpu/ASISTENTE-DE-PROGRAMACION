@@ -99,6 +99,7 @@ function App() {
           <ChatWindow
             messages={messages}
             settings={settings}
+            sources={sources}
             draftQuestion={draftQuestion}
             onDraftQuestionUsed={markDraftQuestionUsed}
             onMessagesChange={setMessages}

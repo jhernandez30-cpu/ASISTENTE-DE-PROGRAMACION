@@ -1,5 +1,5 @@
 import { sampleSources } from '../data/sampleSources';
-import { AppSettings } from '../types';
+import { AppSettings, ChatMessage, SourceItem } from '../types';
 
 const wait = (ms: number) => new Promise((resolve) => window.setTimeout(resolve, ms));
 
@@ -722,7 +722,7 @@ Haz un proyecto por semana y subelo a GitHub con un README que explique que hace
 Quieres que te proponga 10 proyectos ordenados de principiante a avanzado?`;
 }
 
-export async function getAssistantResponse(question: string, settings: AppSettings): Promise<string> {
+async function getLocalAssistantResponse(question: string, settings: AppSettings): Promise<string> {
   await wait(650);
 
   const normalizedQuestion = normalize(question);
@@ -842,4 +842,37 @@ export async function getAssistantResponse(question: string, settings: AppSettin
   }
 
   return buildGeneralProgrammingAnswer(question, settings);
+}
+
+export async function getAssistantResponse(
+  question: string,
+  settings: AppSettings,
+  messages: ChatMessage[] = [],
+  sources: SourceItem[] = sampleSources
+): Promise<string> {
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        question,
+        settings,
+        messages,
+        sources
+      })
+    });
+
+    if (response.ok) {
+      const data = (await response.json()) as { answer?: string };
+      if (data.answer?.trim()) {
+        return data.answer;
+      }
+    }
+  } catch {
+    // En desarrollo local con Vite no existe /api/chat; usamos el tutor local.
+  }
+
+  return getLocalAssistantResponse(question, settings);
 }

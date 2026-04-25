@@ -1,11 +1,12 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { getAssistantResponse } from '../services/assistantService';
-import { AppSettings, ChatMessage } from '../types';
+import { AppSettings, ChatMessage, SourceItem } from '../types';
 import { MessageBubble } from './MessageBubble';
 
 interface ChatWindowProps {
   messages: ChatMessage[];
   settings: AppSettings;
+  sources: SourceItem[];
   draftQuestion: string;
   onDraftQuestionUsed: () => void;
   onMessagesChange: (messages: ChatMessage[]) => void;
@@ -22,6 +23,7 @@ const createMessage = (sender: ChatMessage['sender'], content: string): ChatMess
 export function ChatWindow({
   messages,
   settings,
+  sources,
   draftQuestion,
   onDraftQuestionUsed,
   onMessagesChange,
@@ -56,7 +58,7 @@ export function ChatWindow({
     setInputValue('');
     setIsThinking(true);
 
-    const assistantContent = await getAssistantResponse(trimmedQuestion, settings);
+    const assistantContent = await getAssistantResponse(trimmedQuestion, settings, nextMessages, sources);
     const assistantMessage = createMessage('assistant', assistantContent);
     onMessagesChange([...nextMessages, assistantMessage]);
     setIsThinking(false);
