@@ -77,8 +77,11 @@ export function ChatWindow({
       <div className="chat-scroll" aria-live="polite">
         {messages.length === 0 ? (
           <div className="empty-state">
-            <strong>Haz tu primera pregunta.</strong>
-            <span>Prueba con Python, SQL, algoritmos, JavaScript o POO.</span>
+            <strong>Hola, soy tu Asistente de Programacion.</strong>
+            <span>
+              Puedo ayudarte a aprender desde cero, elegir un lenguaje, crear una app, revisar errores o estudiar Python, C#,
+              bases de datos, Power BI, ciberseguridad, N8N y desarrollo web.
+            </span>
           </div>
         ) : (
           messages.map((message) => <MessageBubble key={message.id} message={message} />)
@@ -98,7 +101,7 @@ export function ChatWindow({
           type="text"
           value={inputValue}
           onChange={(event) => setInputValue(event.target.value)}
-          placeholder="Escribe una pregunta, por ejemplo: ¿Qué es un algoritmo?"
+          placeholder="Ej. Quiero aprender a programar, por donde comienzo?"
           aria-label="Pregunta para el asistente"
         />
         <button className="primary-button" type="submit" disabled={isThinking}>

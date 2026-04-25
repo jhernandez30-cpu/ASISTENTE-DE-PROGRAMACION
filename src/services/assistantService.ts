@@ -284,6 +284,299 @@ function looksLikeCode(question: string) {
   return /```|;|{|}|\bconsole\.log\b|\bprint\(|\bSELECT\b|\bpublic class\b|\bfunction\b|\bconst\b|\blet\b|\bvar\b/i.test(question);
 }
 
+function includesAny(text: string, terms: string[]) {
+  return terms.some((term) => text.includes(normalize(term)));
+}
+
+function buildStartLearningAnswer(settings: AppSettings) {
+  const student = settings.studentName.trim() || 'estudiante';
+
+  return `1. Respuesta directa:
+${student}, si quieres aprender a programar desde cero, comienza por logica de programacion y luego usa Python como primer lenguaje. Python es claro, practico y te permite avanzar hacia web, datos, automatizacion e inteligencia artificial.
+
+2. Explicacion sencilla:
+Programar no empieza memorizando comandos. Empieza aprendiendo a pensar en pasos: recibir datos, tomar decisiones, repetir acciones, organizar informacion y resolver problemas pequenos.
+
+3. Ruta sugerida:
+1. Logica de programacion: variables, condicionales, ciclos, funciones y listas.
+2. Python basico: sintaxis, entrada/salida, funciones, archivos y errores.
+3. Algoritmos simples: promedio, busqueda, ordenamiento basico y validaciones.
+4. Bases de datos: tablas, SQL, SELECT, INSERT, UPDATE, DELETE y relaciones.
+5. Proyectos pequenos: calculadora, agenda, sistema de notas e inventario.
+6. Especializacion: web, escritorio, datos, ciberseguridad o automatizacion.
+
+4. Ejemplo practico:
+\`\`\`python
+nombre = input("Cual es tu nombre? ")
+print("Hola", nombre)
+\`\`\`
+Mini proyectos para iniciar:
+- Calculadora basica.
+- Conversor de temperatura.
+- Juego de adivinar un numero.
+- Registro de estudiantes con notas.
+
+5. Recomendacion final:
+Estudia 30 minutos diarios durante 30 dias. No saltes directo a frameworks; primero domina logica, Python y ejercicios pequenos. ${bookRecommendation('programacion')}
+
+6. Pregunta de seguimiento:
+Quieres que te prepare una ruta de aprendizaje de 30 dias desde cero?`;
+}
+
+function buildLanguageRecommendationAnswer() {
+  return `1. Respuesta directa:
+Si estas empezando desde cero, te recomiendo Python. Pero el mejor lenguaje depende de lo que quieras crear.
+
+2. Explicacion sencilla:
+Python es ideal para aprender logica porque se lee facil. JavaScript es clave para paginas web. C# es excelente para software empresarial y aplicaciones con .NET. SQL es obligatorio si vas a trabajar con datos.
+
+3. Ruta sugerida:
+Si quieres desarrollo web:
+- HTML, CSS y JavaScript.
+- Luego React.
+- Despues APIs con Node.js o C#.
+
+Si quieres aplicaciones de escritorio o software empresarial:
+- C#.
+- .NET.
+- SQL Server.
+
+Si quieres datos o inteligencia artificial:
+- Python.
+- SQL.
+- Pandas.
+- Power BI.
+
+Si quieres ciberseguridad:
+- Redes.
+- Linux.
+- Python.
+- Seguridad web y OWASP.
+
+Si quieres automatizacion:
+- Python.
+- N8N.
+- APIs.
+- JSON y webhooks.
+
+4. Ejemplo practico:
+Una buena combinacion inicial seria:
+\`\`\`text
+Mes 1: Logica + Python
+Mes 2: SQL + proyectos pequenos
+Mes 3: Elegir ruta: Web, Datos, C#, Ciberseguridad o N8N
+\`\`\`
+
+5. Recomendacion final:
+Empieza con Python si no tienes objetivo claro. Si ya sabes que quieres hacer paginas web, empieza con HTML, CSS y JavaScript. ${bookRecommendation('python')}
+
+6. Pregunta de seguimiento:
+Tu objetivo es hacer paginas web, aplicaciones, inteligencia artificial, datos, ciberseguridad o trabajar como programador?`;
+}
+
+function buildUnknownAreaAnswer() {
+  return `1. Respuesta directa:
+Es normal no saber que area elegir al inicio. Lo mejor es aprender fundamentos y probar mini proyectos de varias areas.
+
+2. Explicacion sencilla:
+La programacion tiene muchas rutas. No tienes que elegir para siempre desde el primer dia; puedes explorar y decidir con experiencia real.
+
+3. Ruta sugerida:
+1. Desarrollo web: paginas y sistemas web. Tecnologias: HTML, CSS, JavaScript, React, APIs.
+2. Software empresarial: sistemas para negocios. Tecnologias: C#, .NET, SQL Server.
+3. Datos e inteligencia de negocios: reportes y analisis. Tecnologias: SQL, Python, Power BI.
+4. Ciberseguridad: proteger sistemas. Tecnologias: redes, Linux, Python, seguridad web.
+5. Automatizacion: ahorrar tiempo con flujos. Tecnologias: N8N, APIs, Python, JSON.
+6. Inteligencia artificial aplicada: chatbots, RAG y asistentes. Tecnologias: Python, APIs, embeddings, bases de conocimiento.
+
+4. Ejemplo practico:
+Prueba estos mini proyectos:
+- Web: una pagina personal responsive.
+- C#: un sistema de inventario de consola.
+- Datos: dashboard simple de ventas en Power BI.
+- Ciberseguridad: checklist defensivo de contrasenas y permisos.
+- N8N: flujo que recibe un formulario y envia un correo.
+
+5. Recomendacion final:
+Empieza con logica + Python durante unas semanas y luego prueba un proyecto pequeno de cada area. ${bookRecommendation('programacion')}
+
+6. Pregunta de seguimiento:
+Quieres que te haga una prueba rapida para saber que area se adapta mas a ti?`;
+}
+
+function buildWebPathAnswer() {
+  return `1. Respuesta directa:
+Para crear paginas web, aprende HTML, CSS y JavaScript. Luego pasa a Git/GitHub, responsive design, APIs y un framework como React.
+
+2. Explicacion sencilla:
+HTML es la estructura, CSS es el diseno y JavaScript es el comportamiento. Cuando ya controles eso, React te ayuda a crear interfaces mas organizadas con componentes.
+
+3. Ruta sugerida:
+1. HTML semantico.
+2. CSS: flexbox, grid, responsive y variables.
+3. JavaScript: DOM, eventos, funciones, arrays, objetos y asincronia.
+4. Git y GitHub.
+5. APIs con fetch.
+6. React + Vite + TypeScript.
+7. PWA, autenticacion y despliegue en Vercel.
+
+4. Ejemplo practico:
+\`\`\`html
+<button id="saludar">Saludar</button>
+<script>
+  document.getElementById("saludar").addEventListener("click", () => {
+    alert("Hola desde JavaScript");
+  });
+</script>
+\`\`\`
+
+5. Recomendacion final:
+Crea primero una pagina personal, luego una lista de tareas y despues una app con datos guardados. ${bookRecommendation('programacion')}
+
+6. Pregunta de seguimiento:
+Quieres que te prepare una ruta para ser frontend o una para desarrollo web full-stack?`;
+}
+
+function buildAppPathAnswer(normalizedQuestion: string) {
+  const isMobile = includesAny(normalizedQuestion, ['movil', 'mobile', 'android', 'ios']);
+  const isDesktop = includesAny(normalizedQuestion, ['escritorio', 'desktop', 'windows']);
+  const appType = isMobile ? 'movil' : isDesktop ? 'de escritorio' : 'web/PWA';
+
+  return `1. Respuesta directa:
+Para crear una app ${appType}, primero define que problema resuelve, que pantallas tendra y donde guardara los datos.
+
+2. Explicacion sencilla:
+Una aplicacion no es solo codigo. Necesita interfaz, logica, datos, validaciones, manejo de errores y una forma de publicarse o instalarse.
+
+3. Ruta sugerida:
+${isMobile ? '1. Aprende JavaScript/TypeScript.\n2. Usa React Native o Flutter.\n3. Aprende navegacion, formularios y almacenamiento local.\n4. Conecta una API.\n5. Publica en tiendas cuando este probada.' : isDesktop ? '1. Aprende C#.\n2. Usa .NET y una tecnologia de escritorio como WPF, WinUI o MAUI.\n3. Aprende formularios, archivos, SQL Server y empaquetado MSIX.\n4. Agrega instalador y pruebas.' : '1. Aprende HTML, CSS, JavaScript y React.\n2. Usa Vite para construir la app.\n3. Agrega manifest y service worker para PWA.\n4. Despliega en Vercel.\n5. Empaqueta para Microsoft Store con MSIX si la quieres como app Windows.'}
+
+4. Ejemplo practico:
+\`\`\`text
+Mini app inicial:
+- Pantalla de inicio
+- Formulario para agregar datos
+- Lista para mostrar registros
+- Boton para eliminar
+- Guardado local
+\`\`\`
+
+5. Recomendacion final:
+Empieza con una app pequena, por ejemplo agenda, inventario, sistema de notas o lista de tareas. ${bookRecommendation(isDesktop ? 'csharp' : 'programacion')}
+
+6. Pregunta de seguimiento:
+Quieres crear una app web, movil, de escritorio o PWA para Microsoft Store?`;
+}
+
+function buildCareerPathAnswer(normalizedQuestion: string) {
+  if (includesAny(normalizedQuestion, ['backend'])) {
+    return `1. Respuesta directa:
+Para ser backend, aprende logica, un lenguaje de servidor, bases de datos, APIs, autenticacion y despliegue.
+
+2. Explicacion sencilla:
+El backend maneja reglas de negocio, usuarios, seguridad, bases de datos y comunicacion con el frontend.
+
+3. Ruta sugerida:
+1. Python o C#.
+2. SQL y modelado de datos.
+3. APIs REST.
+4. Autenticacion y autorizacion.
+5. Pruebas, logs y manejo de errores.
+6. Despliegue y seguridad basica.
+
+4. Ejemplo practico:
+Construye una API de estudiantes con crear, listar, editar y eliminar registros.
+
+5. Recomendacion final:
+Si quieres software empresarial, usa C# + .NET + SQL Server. Si quieres rapidez y datos, usa Python. ${bookRecommendation('bases de datos')}
+
+6. Pregunta de seguimiento:
+Quieres una ruta backend con C# o con Python?`;
+  }
+
+  if (includesAny(normalizedQuestion, ['frontend'])) {
+    return buildWebPathAnswer();
+  }
+
+  if (includesAny(normalizedQuestion, ['datos', 'data', 'analisis', 'analista'])) {
+    return `1. Respuesta directa:
+Para datos, aprende Excel solido, SQL, Power BI y Python para analisis.
+
+2. Explicacion sencilla:
+El area de datos convierte informacion en decisiones. Necesitas limpiar datos, consultarlos, analizarlos y presentarlos claramente.
+
+3. Ruta sugerida:
+1. Excel y conceptos de tablas.
+2. SQL: consultas, joins y agrupaciones.
+3. Power Query para limpieza.
+4. Power BI para dashboards.
+5. DAX para medidas.
+6. Python con pandas para analisis mas avanzado.
+
+4. Ejemplo practico:
+Crea un dashboard de ventas con total vendido, ventas por mes, producto mas vendido y comparacion por vendedor.
+
+5. Recomendacion final:
+Empieza por SQL y Power BI; luego agrega Python. ${bookRecommendation('power bi')}
+
+6. Pregunta de seguimiento:
+Quieres una ruta para analista de datos o para inteligencia de negocios con Power BI?`;
+  }
+
+  if (includesAny(normalizedQuestion, ['ciberseguridad', 'seguridad'])) {
+    return `1. Respuesta directa:
+Para ciberseguridad, empieza con redes, Linux, fundamentos de seguridad, Python y practicas legales en laboratorios.
+
+2. Explicacion sencilla:
+La ciberseguridad no es solo atacar; sobre todo es proteger sistemas, detectar riesgos, configurar permisos y desarrollar software seguro.
+
+3. Ruta sugerida:
+1. Redes: IP, DNS, HTTP, puertos.
+2. Linux basico.
+3. Python para scripts.
+4. Seguridad web y OWASP.
+5. Bases de datos y SQL injection defensivo.
+6. Laboratorios legales y buenas practicas.
+
+4. Ejemplo practico:
+Haz una auditoria defensiva de una app: contrasenas, permisos, validacion de formularios, logs y dependencias.
+
+5. Recomendacion final:
+Practica siempre en entornos propios o autorizados. ${bookRecommendation('ciberseguridad')}
+
+6. Pregunta de seguimiento:
+Quieres una ruta de ciberseguridad defensiva para principiantes?`;
+  }
+
+  return `1. Respuesta directa:
+Para trabajar como programador, aprende fundamentos, crea proyectos reales, usa GitHub y especializate en un area.
+
+2. Explicacion sencilla:
+Las empresas buscan personas que resuelvan problemas, entiendan codigo, trabajen con datos, usen Git y puedan construir soluciones mantenibles.
+
+3. Ruta sugerida:
+1. Logica de programacion.
+2. Python o JavaScript como primer lenguaje.
+3. SQL y bases de datos.
+4. Git y GitHub.
+5. Proyectos reales.
+6. Una especialidad: frontend, backend, datos, escritorio, movil o ciberseguridad.
+
+4. Ejemplo practico:
+Portafolio inicial:
+- Calculadora.
+- Sistema de notas.
+- CRUD de estudiantes.
+- Dashboard simple.
+- App web publicada en Vercel.
+
+5. Recomendacion final:
+Publica tus proyectos en GitHub y escribe un README claro para cada uno. ${bookRecommendation('programacion')}
+
+6. Pregunta de seguimiento:
+Que area te llama mas la atencion: web, backend, datos, C#, movil o ciberseguridad?`;
+}
+
 function buildResponse(topic: TutorTopic, settings: AppSettings) {
   const level = settings.level;
 
@@ -390,6 +683,91 @@ export async function getAssistantResponse(question: string, settings: AppSettin
   // PDFs, TXT, Markdown o DOCX y responder con citas verificables.
   if (looksLikeCode(question) && !detectedTopic) {
     return buildCodeReviewAnswer(question, settings);
+  }
+
+  if (
+    includesAny(normalizedQuestion, [
+      'por donde comienzo',
+      'por donde empiezo',
+      'como empiezo',
+      'quiero aprender',
+      'aprender a programar',
+      'desde cero',
+      'empezar a programar'
+    ])
+  ) {
+    return buildStartLearningAnswer(settings);
+  }
+
+  if (
+    includesAny(normalizedQuestion, [
+      'que lenguaje',
+      'cual lenguaje',
+      'lenguaje me recomiendas',
+      'python o javascript',
+      'mejor para empezar',
+      'que debo aprender primero'
+    ])
+  ) {
+    return buildLanguageRecommendationAnswer();
+  }
+
+  if (
+    includesAny(normalizedQuestion, [
+      'no se que area',
+      'que area',
+      'area de programacion',
+      'que rama',
+      'no se que elegir',
+      'que camino'
+    ])
+  ) {
+    return buildUnknownAreaAnswer();
+  }
+
+  if (
+    includesAny(normalizedQuestion, [
+      'pagina web',
+      'paginas web',
+      'sitio web',
+      'desarrollo web',
+      'hacer web',
+      'crear web'
+    ])
+  ) {
+    return buildWebPathAnswer();
+  }
+
+  if (
+    includesAny(normalizedQuestion, [
+      'crear una app',
+      'crear app',
+      'hacer una app',
+      'hacer app',
+      'aplicacion movil',
+      'aplicacion de escritorio',
+      'app movil',
+      'app de escritorio'
+    ])
+  ) {
+    return buildAppPathAnswer(normalizedQuestion);
+  }
+
+  if (
+    includesAny(normalizedQuestion, [
+      'trabajar como programador',
+      'ser programador',
+      'ser desarrollador',
+      'ruta backend',
+      'ruta frontend',
+      'ruta de datos',
+      'desarrollador web',
+      'backend',
+      'frontend',
+      'analista de datos'
+    ])
+  ) {
+    return buildCareerPathAnswer(normalizedQuestion);
   }
 
   if (detectedTopic) {
