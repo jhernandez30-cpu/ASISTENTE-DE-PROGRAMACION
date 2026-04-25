@@ -1,0 +1,18 @@
+{
+  "short_name": "AsistenteProg",
+  "name": "Asistente de Programacion",
+  "description": "Asistente educativo para aprender programación con libros, documentos y fuentes de estudio.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#0b1220",
+  "background_color": "#050816",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
